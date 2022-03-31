@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     res.status(200).json({
-        message: 'Create a new user'
+        message: 'Creating a new user'
     })
 })
 
