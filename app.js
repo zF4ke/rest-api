@@ -1,7 +1,8 @@
-import 'dotenv/config'
+import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 
 /* App */
 const app = express()
@@ -12,6 +13,9 @@ app.use(morgan('dev'))
 /* Body Parser */
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+/* Database */
+mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true })
 
 /* CORS */
 app.use((req, res, next) => {
