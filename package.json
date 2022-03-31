@@ -1,0 +1,22 @@
+{
+  "name": "rest-api",
+  "version": "1.0.0",
+  "description": "the thing you cant talk about to anyone",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "zF4ke",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
