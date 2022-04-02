@@ -30,6 +30,7 @@ router.post('/', validateFields, async (req, res) => {
 
         return res.status(201).json({
             message: 'Person created successfully.',
+            person
         })
     } catch (err) {
         return res.status(500).json({
