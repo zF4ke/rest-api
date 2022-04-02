@@ -53,3 +53,11 @@ app.use((error, req, res, next) => {
 })
 
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`))
+
+
+/* Prevents Crashing */
+process.on('uncaughtException', function (err) {
+    console.error(err);
+    console.log("Node NOT Exiting...");
+});
+  
