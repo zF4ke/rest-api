@@ -1,6 +1,8 @@
 import express from 'express';
 const router = express.Router()
 
+import User from '../models/user'
+
 /* /users */
 
 router.get('/', (req, res) => {
@@ -18,7 +20,7 @@ router.post('/', (req, res) => {
 /* /users/:id */
 
 router.get('/:id', (req, res) => {
-    res.status(200).json({
+    return res.status(200).json({
         message: `Getting a single user with id ${req.params.id}`
     })
 })
