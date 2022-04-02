@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
  * @param {string} password
  */
 
-router.post('/', validateUser, async (req, res) => {
+router.post('/signup', validateUser, async (req, res) => {
     const username = req.body?.username
     const password = req.body?.password
 
@@ -46,7 +46,7 @@ router.post('/', validateUser, async (req, res) => {
 
         res.status(201).json({
             message: 'User created successfully.',
-            user: req.body
+            user
         })
     } catch (err) {
         console.error(err)
