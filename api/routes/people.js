@@ -28,7 +28,7 @@ router.post('/', validateFields, async (req, res) => {
 
         await person.save()
 
-        return res.status(200).json({
+        return res.status(201).json({
             message: 'Person created successfully.',
         })
     } catch (err) {
