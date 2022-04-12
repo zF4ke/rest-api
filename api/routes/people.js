@@ -1,123 +1,23 @@
-import check from 'check-types'
 import express from 'express';
 const router = express.Router()
-
-import Person from '../models/person.js'
+import check from 'check-types'
 
 import checkAuth from '../middleware/checkAuth.js'
+import { createPerson, deletePerson, getAllPeople, getPerson, updatePerson } from '../controllers/people.js';
 
 /* /people */
 
-router.get('/', checkAuth, async (req, res) => {
-    const people = await Person.find()
+router.get('/', checkAuth, getAllPeople)
 
-    return res.status(200).json(people)
-})
-
-/*
- * @param {array} fields
- */
-
-router.post('/', checkAuth, validateFields, async (req, res) => {
-    const fields = req.body?.fields
-
-    // Create new person
-
-    try {
-        const person = new Person({
-            fields: fields
-        })
-
-        await person.save()
-
-        return res.status(201).json({
-            message: 'Person created successfully.',
-            person
-        })
-    } catch (err) {
-        return res.status(500).json({
-            message: 'Internal server error'
-        })
-    }
-})
+router.post('/', checkAuth, validateFields, createPerson)
  
 /* /people/:id */
 
-/*
- * @param {id} id
- */
+router.get('/:id', checkAuth, validateId, getPerson)
 
-router.get('/:id', checkAuth, validateId, async (req, res) => {
-    const id = req.params?.id
+router.patch('/:id', checkAuth, validateId, validateFields, updatePerson)
 
-    // Find and return person
-
-    try {
-        const person = await Person.findById(id)
-
-        return res.status(200).json(person)
-
-    } catch (err) {
-        return res.status(500).json({
-            message: 'Internal server error'
-        })
-    }
-})
-
-/*
- * @param {id} id
- * @param {array} fields
- */
-
-router.patch('/:id', checkAuth, validateId, validateFields, async (req, res) => {
-    const id = req.params?.id
-    const fields = req.body?.fields
-
-    // Find and update person
-
-    try {
-        await Person.findByIdAndUpdate(id, {
-            fields,
-            updatedAt: Date.now()
-        })
-
-        return res.status(200).json({
-            message: 'Person updated successfully.',
-        })
-        
-    } catch (err) {
-        return res.status(500).json({
-            message: 'Internal server error'
-        })
-    }
-})
-
-/*
- * @param {id} id
- */
-
-router.delete('/:id', checkAuth, validateId, async (req, res) => {
-    const id = req.params?.id
-
-    // Find and delete person
-
-    try {
-        const person = await Person.findByIdAndDelete(id)
-
-        if (check.assigned(person)) return res.status(200).json({
-            message: 'Person deleted successfully.'
-        })
-
-        return res.status(404).json({
-            message: 'Person not found.'
-        })
-
-    } catch (err) {
-        return res.status(500).json({
-            message: 'Internal server error'
-        })
-    }
-})
+router.delete('/:id', checkAuth, validateId, deletePerson)
 
 function validateId(req, res, next) {
     const id = req.params?.id
@@ -154,6 +54,5 @@ function validateFields(req, res, next) {
 
     next()
 }
-
 
 export default router
