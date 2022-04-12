@@ -4,9 +4,11 @@ const router = express.Router()
 
 import Person from '../models/person.js'
 
+import checkAuth from '../middleware/checkAuth.js'
+
 /* /people */
 
-router.get('/', async (req, res) => {
+router.get('/', checkAuth, async (req, res) => {
     const people = await Person.find()
 
     return res.status(200).json(people)
@@ -16,7 +18,7 @@ router.get('/', async (req, res) => {
  * @param {array} fields
  */
 
-router.post('/', validateFields, async (req, res) => {
+router.post('/', checkAuth, validateFields, async (req, res) => {
     const fields = req.body?.fields
 
     // Create new person
@@ -45,7 +47,7 @@ router.post('/', validateFields, async (req, res) => {
  * @param {id} id
  */
 
-router.get('/:id', validateId, async (req, res) => {
+router.get('/:id', checkAuth, validateId, async (req, res) => {
     const id = req.params?.id
 
     // Find and return person
@@ -67,7 +69,7 @@ router.get('/:id', validateId, async (req, res) => {
  * @param {array} fields
  */
 
-router.patch('/:id', validateId, validateFields, async (req, res) => {
+router.patch('/:id', checkAuth, validateId, validateFields, async (req, res) => {
     const id = req.params?.id
     const fields = req.body?.fields
 
@@ -94,7 +96,7 @@ router.patch('/:id', validateId, validateFields, async (req, res) => {
  * @param {id} id
  */
 
-router.delete('/:id', validateId, async (req, res) => {
+router.delete('/:id', checkAuth, validateId, async (req, res) => {
     const id = req.params?.id
 
     // Find and delete person

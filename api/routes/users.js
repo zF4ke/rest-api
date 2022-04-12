@@ -6,9 +6,11 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/user.js'
 
+import checkAuth from '../middleware/checkAuth.js'
+
 /* /users */
 
-router.get('/', async (req, res) => {
+router.get('/', checkAuth, async (req, res) => {
     const users = await User.find()
 
     return res.status(200).json(users)
@@ -19,7 +21,7 @@ router.get('/', async (req, res) => {
  * @param {string} password
  */
 
-router.post('/signup', validateUser, async (req, res) => {
+router.post('/signup', checkAuth, validateUser, async (req, res) => {
     const username = req.body?.username
     const password = req.body?.password
 
@@ -109,7 +111,7 @@ router.post('/login', async (req, res) => {
  * @param {id} id
  */
 
-router.get('/:id', validateId, async (req, res) => {
+router.get('/:id', checkAuth, validateId, async (req, res) => {
     const id = req.params?.id
 
     // Find and return user
@@ -130,7 +132,7 @@ router.get('/:id', validateId, async (req, res) => {
  * @param {id} id
  */
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', checkAuth, (req, res) => {
     return res.status(200).json({
         message: `Editing a single user with id ${req.params.id}`
     })
@@ -140,7 +142,7 @@ router.patch('/:id', (req, res) => {
  * @param {id} id
  */
 
-router.delete('/:id', validateId, async (req, res) => {
+router.delete('/:id', checkAuth, validateId, async (req, res) => {
     const id = req.params?.id
 
     // Find and delete user
