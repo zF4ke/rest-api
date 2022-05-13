@@ -1,7 +1,9 @@
 import Person from '../models/person.js'
 
-export const getAllPeople = async (req, res) => {
-    const people = await Person.find()
+export const getPeople = async (req, res) => {
+    const limit = req.body?.limit || 20
+
+    const people = await Person.find().limit(limit)
 
     return res.status(200).json(people)
 }

@@ -3,11 +3,11 @@ const router = express.Router()
 import check from 'check-types'
 
 import checkAuth from '../middleware/checkAuth.js'
-import { createPerson, deletePerson, getAllPeople, getPerson, updatePerson } from '../controllers/people.js';
+import { createPerson, deletePerson, getPeople, getPerson, updatePerson } from '../controllers/people.js';
 
 /* /people */
 
-router.get('/', checkAuth, getAllPeople)
+router.get('/', checkAuth, validateLimit, getPeople)
 
 router.post('/', checkAuth, validateFields, createPerson)
  
@@ -52,6 +52,18 @@ function validateFields(req, res, next) {
         message: 'Fields array must not be empty'
     })
 
+    next()
+}
+
+function validateLimit(req, res, next) {
+    const limit = req.body?.limit
+
+    // Check if limit is valid
+
+    if (limit <= 0) return res.status(400).json({
+        message: 'Limit must be greater than 0'
+    })
+    
     next()
 }
 
